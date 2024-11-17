@@ -1,7 +1,7 @@
 -- Escriba consultas SQL para realizar las siguientes tareas utilizando la base de datos Sakila:
 -- 1. Determinar el número de copias de la película “Jorobado: Imposible” que existen en el sistema de inventario.
 
-SELECT COUNT(*) FROM film WHERE title = 'Jorobado: Imposible';
+SELECT COUNT(*) FROM inventory WHERE film_id = (SELECT film_id FROM film WHERE title = 'Huncback Impossible');
 
 -- 2. Enumere todas las películas cuya duración sea mayor que la duración promedio de todas las películas en la base de datos de Sakila.
 
@@ -16,8 +16,11 @@ SELECT * FROM actor WHERE actor_id IN (SELECT actor_id FROM film_actor WHERE fil
 -- 4. Las ventas han disminuido entre las familias jóvenes y usted desea dirigirse a películas familiares para una promoción. 
 -- Identifique todas las películas categorizadas como películas familiares.
 
-SELECT * FROM film WHERE film_id IN (SELECT film_id FROM film_category WHERE category_id = (SELECT category_id FROM category WHERE name = 'Family'));
-
+SELECT f.title 
+FROM film f
+JOIN film_category fc ON f.film_id = fc.film_id
+JOIN category c ON fc.category_id = c.category_id
+WHERE c.name = 'Family';
 
 -- 5. Recupere el nombre y el correo electrónico de los clientes de Canadá mediante subconsultas y uniones. 
 -- Para utilizar uniones, deberá identificar las tablas relevantes y sus claves primarias y externas.
